@@ -70,7 +70,9 @@ export class Config {
         }
 
         const name = path.split('/').pop();
-        this.data.wallets.push({ name, path });
-        this.save();
+        if (!this.data.wallets.find(wallet => wallet.name === name && wallet.path === path)) {
+            this.data.wallets.push({ name, path });
+            this.save();
+        }
     }
 }

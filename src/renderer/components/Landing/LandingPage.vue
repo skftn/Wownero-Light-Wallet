@@ -22,7 +22,7 @@
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a v-on:click="openWallet" class="dropdown-item" href="#">Browse</a>
-                        <a v-on:click="openLastWallet" v-for="item in cfg_wallet_names" class="dropdown-item" href="#">{{item}}</a>
+                        <a v-on:click="openLastWallet" v-for="wallet in cfg_wallets" :data-path="wallet.path" class="dropdown-item" href="#">{{wallet.name}}</a>
                     </div>
                 </div>
 
@@ -123,8 +123,7 @@
                 });
             },
             openLastWallet(event){
-                const selectedWallet = this.cfg_wallets.find(i => i.name === event.currentTarget.text);
-                this.$store.commit('addWalletPath', selectedWallet.path);
+                this.$store.commit('addWalletPath', event.target.dataset.path);
                 this.$store.commit('showPassword', {
                     'message': 'Enter wallet password'
                 });
@@ -194,9 +193,6 @@
             },
             cfg_wallets(){
                 return this.$store.getters.cfg.wallets;
-            },
-            cfg_wallet_names(){
-                return this.$store.getters.cfg.wallets.map(i => i.name);
             }
         }
     }

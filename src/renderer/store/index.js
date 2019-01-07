@@ -95,9 +95,14 @@ export default new Vuex.Store({
             state.height_from = data.from;
             state.height_to = data.to;
         },
-        addWallet({wallet}, data){
+        addWallet({cfg, wallet}, data){
             if(data.hasOwnProperty('wallet_path')){
                 wallet.path = data.wallet_path;
+
+                const name = data.wallet_path.split('/').pop();
+                if (!cfg.wallets.find(wallet => wallet.name === name && wallet.path === data.wallet_path)) {
+                    cfg.wallets.push({ name, path: data.wallet_path });
+                }
             }
 
             if(data.hasOwnProperty('txs')){
